@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "./firebase";
 import './index.css';
+import { signInWithPopup } from "firebase/auth";
+import { googleProvider } from "./firebase";
 
 import { 
   createUserWithEmailAndPassword, 
@@ -59,6 +61,15 @@ function App() {
       alert(error.message);
     }
   };
+  //login with google 
+
+  const loginWithGoogle = async () => {
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch (error) {
+    alert(error.message);
+  }
+};
 
   const logout = async () => {
     await signOut(auth);
@@ -82,6 +93,7 @@ function App() {
   return (
     <div className="app-container">
       {!user ? (
+
         <div className="auth-container">
           <h2 className="auth-title">Login / Signup</h2>
           <div className="input-group">
@@ -102,6 +114,7 @@ function App() {
           <div className="button-group">
             <button className="auth-button signup" onClick={signup}>Sign Up</button>
             <button className="auth-button login" onClick={login}>Login</button>
+            <button className="auth-button google" onClick={loginWithGoogle}>Sign in with Google</button>
           </div>
         </div>
       ) : (
